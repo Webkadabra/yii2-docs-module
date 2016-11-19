@@ -16,5 +16,5 @@ class Module extends \yii\base\Module
     /**
      * @inheritdoc
      */
-    public $controllerNamespace = 'backend\modules\affiliates\controllers';
+    public $controllerNamespace = 'webkadabra\yii\modules\docs\controllers';
 }
