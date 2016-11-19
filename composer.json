@@ -1,5 +1,6 @@
 {
     "name": "webkadabra/yii2-docs-module",
+	"version": "1.0.0",
     "description": "Yii2 Documentaiton Viewer Module",
     "type": "yii2-module",
     "license": "MIT",
