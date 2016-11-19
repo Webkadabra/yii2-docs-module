@@ -1,0 +1,26 @@
+{
+    "name": "webkadabra/yii2-docs-module",
+    "description": "Yii2 Documentaiton Viewer Module",
+    "type": "yii2-module",
+    "license": "MIT",
+	"keywords": [
+		"yii2",
+		"module",
+		"documentation",
+		"wiki"
+	],
+    "authors": [
+        {
+            "name": "Sergii Gamaiunov",
+            "email": "hello@webkadabra.com"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": ">=2.0.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "webkadabra\\yii\\modules\\docs\\": ""
+        }
+    }
+}
