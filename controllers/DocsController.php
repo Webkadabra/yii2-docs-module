@@ -26,7 +26,7 @@ class DocsController  extends Controller
      */
     public function behaviors()
     {
-        return [
+        $rules = [
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -35,9 +35,6 @@ class DocsController  extends Controller
             ],
             'access' => [
                 'class' => AccessControl::className(),
-                'ruleConfig' => class_exists('AccessRule') ? [
-                    'class' => AccessRule::className(),
-                ] : [],
                 'rules' => [
                     [
                         'allow' => true,
@@ -46,6 +43,12 @@ class DocsController  extends Controller
                 ],
             ],
         ];
+        if (class_exists('AccessRule')) {
+            $rules['access']['ruleConfig'] = [
+                'class' => AccessRule::className(),
+            ];
+        }
+        return $rules;
     }
 
     /**
