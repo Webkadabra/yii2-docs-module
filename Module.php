@@ -17,4 +17,7 @@ class Module extends \yii\base\Module
      * @inheritdoc
      */
     public $controllerNamespace = 'webkadabra\yii\modules\docs\controllers';
+    
+    public $docsPath = '@app/../docs';
+    public $allowedRoles = ['admin'];
 }

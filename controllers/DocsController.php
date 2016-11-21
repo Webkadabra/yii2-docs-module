@@ -38,7 +38,7 @@ class DocsController  extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'roles' => ['admin'],
+                        'roles' => $this->module->allowedRoles,
                     ],
                 ],
             ],
@@ -61,7 +61,7 @@ class DocsController  extends Controller
             throw new NotFoundHttpException();
         }
         $page = trim($page, '/');
-        $viewPath = \Yii::getAlias('@app/../docs');
+        $viewPath = \Yii::getAlias($this->module->docsPath);
         $fileLists = \yii\helpers\FileHelper::findFiles($viewPath,['only'=>[
             '*.md',
             '*.txt'
