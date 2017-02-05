@@ -2,6 +2,12 @@
 
 A simple documentation viewer for your `*.MD` files.
 
+### Installation via Composer
+
+You can install package with a command:
+
+> composer require webkadabra/yii2-docs-module
+
 ### Example usage with Yii2 Advanced App
 
 Assume the following structure of your applicaiton's folders:
