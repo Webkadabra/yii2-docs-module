@@ -38,6 +38,25 @@ Anyways, add this module to your `backend` config first:
 // ...
 ```
 
+Advanced configuration, with breadcrumbs and shit can be achieved like this (simple example):
+
+```
+// ...
+'modules' => [
+        // ...
+        'docs' => [
+            'class' => 'webkadabra\yii\modules\docs\Module',
+            'layout' => '/docs',
+            'on beforeAction'=>function($event) {
+                /** @var $event yii\base\ActionEvent */
+                Yii::$app->view->params['breadcrumbs'][] = ['label' => Yii::t('app', ucfirst($event->sender->id)), 'url' => ['/docs/index']];
+                Yii::$app->view->params['breadcrumbs'][] = ucwords(str_replace(['/', '_',], [' / ', ' '], Yii::$app->request->getQueryParam('page')));
+            }
+        ],
+        // ...
+],
+// ...
+```
 Also, looks like this should be in too, for `backend` (or any yii2 app):
 
 ```
