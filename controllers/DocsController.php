@@ -73,12 +73,45 @@ class DocsController  extends Controller
             $view_id = str_replace(['.php', '.md', '.txt'], ['','',''], $view_id);
             $view_id = ltrim($view_id, '/');
             if ($view_id && $view_id == $page) {
-                // For each file we are trying to read first comments block for template configuration
                 $file_get_contents = file_get_contents($value);
                 $content = Markdown::process($file_get_contents, 'extra');
                 return $this->render('page', [
                     'content' => $content,
                 ]);
+            }
+        }
+        // no page found? try show documents index:
+        $dirsLists = \yii\helpers\FileHelper::findDirectories($viewPath,['only'=>[
+            '*.md',
+            '*.txt'
+        ]]);
+        foreach ($dirsLists as $value) {
+            $view_id = str_ireplace($viewPath, '', $value);
+            $view_id = str_ireplace(DIRECTORY_SEPARATOR, '/', $view_id);
+            $view_id = trim($view_id, DIRECTORY_SEPARATOR);
+            $view_id = str_replace(['.php', '.md', '.txt'], ['','',''], $view_id);
+            $view_id = ltrim($view_id, '/');
+            if ($view_id && $view_id == $page) {
+                $fileLists = \yii\helpers\FileHelper::findFiles($value,['only'=>[
+                    '*.md',
+                    '*.txt'
+                ]]);
+                $links = [];
+                foreach ($fileLists as $value2) {
+                    $view_id2 = str_ireplace($viewPath, '', $value2);
+                    $view_id2 = str_ireplace(DIRECTORY_SEPARATOR, '/', $view_id2);
+                    $view_id2 = trim($view_id2, DIRECTORY_SEPARATOR);
+                    $view_id2 = str_replace(['.php', '.md', '.txt'], ['','',''], $view_id2);
+                    $view_id2 = ltrim($view_id2, '/');
+                    $links[] = '<'.urldecode(Yii::$app->urlManager->createAbsoluteUrl(['/docs/docs/index', 'page' => $view_id2], 1)).'>';
+                }
+                $tpl = "Index\n\n* " . implode("\n* ", $links);
+                $content = Markdown::process($tpl, 'extra');
+                return $this->render('page', [
+                    'content' => $content,
+                ]);
+
+
             }
         }
         throw new NotFoundHttpException();
