@@ -97,15 +97,17 @@ class DocsController  extends Controller
                     '*.txt'
                 ]]);
                 $links = [];
-                foreach ($fileLists as $value2) {
-                    $view_id2 = str_ireplace($viewPath, '', $value2);
+                foreach ($fileLists as $fileName) {
+                    $view_id2 = str_ireplace($viewPath, '', $fileName);
                     $view_id2 = str_ireplace(DIRECTORY_SEPARATOR, '/', $view_id2);
                     $view_id2 = trim($view_id2, DIRECTORY_SEPARATOR);
                     $view_id2 = str_replace(['.php', '.md', '.txt'], ['','',''], $view_id2);
                     $view_id2 = ltrim($view_id2, '/');
-                    $links[] = '<'.urldecode(Yii::$app->urlManager->createAbsoluteUrl(['/docs/docs/index', 'page' => $view_id2], 1)).'>';
+                    $resolveTitle = str_ireplace($view_id, '', $view_id2);
+                    $resolveTitle = ltrim($resolveTitle, '/');
+                    $links[] = '['.$resolveTitle.']('.urldecode(Yii::$app->urlManager->createAbsoluteUrl(['/docs/docs/index', 'page' => $view_id2], 1)).')';
                 }
-                $tpl = "Index\n\n* " . implode("\n* ", $links);
+                $tpl = Yii::t('app', 'Index') . "\n\n* " . implode("\n* ", $links);
                 $content = Markdown::process($tpl, 'extra');
                 return $this->render('page', [
                     'content' => $content,
