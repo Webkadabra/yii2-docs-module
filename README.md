@@ -65,7 +65,7 @@ Also, looks like this should be in too, for `backend` (or any yii2 app):
   // ...
     'urlManager' => [
       'rules' => [
-        'docs/<page:[\w\d\/]+>' => 'docs/docs/index',
+        'docs/<page:[\w\d\/\-]+>' => 'docs/docs/index',
       ],
     ],
   ],
