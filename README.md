@@ -38,7 +38,7 @@ Anyways, add this module to your `backend` config first:
 // ...
 ```
 
-Advanced configuration, with breadcrumbs and shit can be achieved like this (simple example):
+Advanced configuration example (e.g. add breadcrumbs):
 
 ```
 // ...
@@ -57,7 +57,8 @@ Advanced configuration, with breadcrumbs and shit can be achieved like this (sim
 ],
 // ...
 ```
-Also, looks like this should be in too, for `backend` (or any yii2 app):
+
+Add custom rule in `urlManager` component:
 
 ```
 // ...
@@ -65,13 +66,17 @@ Also, looks like this should be in too, for `backend` (or any yii2 app):
   // ...
     'urlManager' => [
       'rules' => [
-        'docs/<page:[\w\d\/\-]+>' => 'docs/docs/index',
+        'docs/<page:[\w\d\/_-]*>' => 'docs/docs/index',
       ],
     ],
   ],
 ```
 
-Now you have your documentaiton available at `http://backend/docs/user/orders/fulfillment`.
+Now you have your documentaiton available at `http://backend.website.test/docs/user/orders/fulfillment`, and going up a tree structure would bring index of documents in that directory, e.g.: `http://backend.website.test/docs/user/` will bring list of documents in 'docs/user` directory (recursively). 
+
+# TODO
+
+* Add multilingual support
 
 Thanks, pull requests are welcome!
 
