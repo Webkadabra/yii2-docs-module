@@ -16,6 +16,9 @@ use dektrium\user\filters\AccessRule;
 
 /**
  * Class DocsController
+ *
+ * @property \webkadabra\yii\modules\docs\Module $module
+ *
  * @package webkadabra\yii\modules\docs\controllers
  * @author sergii gamaiunov <hello@webkadabra.com>
  */
@@ -55,9 +58,10 @@ class DocsController  extends Controller
      * Lists all Customer models.
      * @return mixed
      */
-    public function actionIndex($page=null)
+    public function actionIndex($page=null, $language = null)
     {
-        $viewPath = \Yii::getAlias($this->module->docsPath);
+        $sourceViewPath = \Yii::getAlias($this->module->docsPath);
+        $viewPath = $this->module->getDocsPath(\Yii::getAlias($this->module->docsPath));
 
         // show simple global index page
         if (!$page || $page == 'index')
@@ -71,6 +75,9 @@ class DocsController  extends Controller
                 $view_id = trim($view_id, DIRECTORY_SEPARATOR);
                 $view_id = str_replace(['.php', '.md', '.txt'], ['','',''], $view_id);
                 $view_id = ltrim($view_id, '/');
+                if ($this->module->translationsFolder && $view_id == $this->module->translationsFolder) {
+                    continue;
+                }
                 if ($view_id) {
                     $fileLists = \yii\helpers\FileHelper::findFiles($value,['only'=>[
                         '*.md',
@@ -105,6 +112,7 @@ class DocsController  extends Controller
             $content = Markdown::process($tpl, 'extra');
             return $this->render('page', [
                 'content' => $content,
+                'availableTranslations' => $availableTranslations ?? [],
             ]);
         }
 
@@ -139,6 +147,7 @@ class DocsController  extends Controller
                     $content = Markdown::process($tpl, 'extra');
                     return $this->render('page', [
                         'content' => $content,
+                        'availableTranslations' => $availableTranslations ?? [],
                     ]);
 
 
@@ -160,11 +169,42 @@ class DocsController  extends Controller
             $view_id = trim($view_id, DIRECTORY_SEPARATOR);
             $view_id = str_replace(['.php', '.md', '.txt'], ['','',''], $view_id);
             $view_id = ltrim($view_id, '/');
+
+            if ($this->module->translationsFolder && $view_id == $this->module->translationsFolder) {
+                continue;
+            }
+
+            // show single page:
             if ($view_id && $view_id == $page) {
                 $file_get_contents = file_get_contents($value);
                 $content = Markdown::process($file_get_contents, 'extra');
+
+                $availableTranslations = [];
+
+                // check for available translations
+                if ($this->module->translationsFolder) {
+                    foreach ($this->module->languages as $languageKey => $language)
+                    {
+                        $view_idFull = str_ireplace($viewPath, '', $value);
+                        if ($languageKey == $this->module->getLanguage()) {
+                            continue;
+                        }
+                        if ($languageKey == $this->module->sourceLanguage) {
+                            $translatedViewId = $viewPath . DIRECTORY_SEPARATOR . $view_idFull;
+                            $url = yii\helpers\Url::toRoute(['index', 'page' => $page]);
+                        } else {
+                            $translatedViewId = $viewPath . DIRECTORY_SEPARATOR . $this->module->translationsFolder
+                                . DIRECTORY_SEPARATOR . $languageKey . DIRECTORY_SEPARATOR  . $view_idFull;
+                            $url = yii\helpers\Url::toRoute(['index', 'page' => $page, 'language' => $languageKey]);
+                        }
+                        if (file_exists($translatedViewId)) {
+                            $availableTranslations[$language] = rawurldecode($url); // must use `rawurldecode` for correct forward slashes in page URLs
+                        }
+                    }
+                }
                 return $this->render('page', [
                     'content' => $content,
+                    'availableTranslations' => $availableTranslations,
                 ]);
             }
         }
@@ -199,6 +239,7 @@ class DocsController  extends Controller
                 $content = Markdown::process($tpl, 'extra');
                 return $this->render('page', [
                     'content' => $content,
+                    'availableTranslations' => $availableTranslations ?? [],
                 ]);
 
 
