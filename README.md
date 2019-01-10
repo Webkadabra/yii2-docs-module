@@ -73,6 +73,11 @@ Also, looks like this should be in too, for `backend` (or any yii2 app):
 
 Now you have your documentaiton available at `http://backend/docs/user/orders/fulfillment`.
 
+TODO:
+
+[] Multilanguage support
+[] Admin/collaborator UI to edit pages
+
 Thanks, pull requests are welcome!
 
 - Sergii
