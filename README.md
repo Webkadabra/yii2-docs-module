@@ -80,8 +80,8 @@ Now you have your documentaiton available at `http://backend.website.test/docs/u
 
 TODO:
 
-[] Multilanguage support
-[] Admin/collaborator UI to edit pages
+* [] Multilanguage support
+* [] Admin/collaborator UI to edit pages
 
 Thanks, pull requests are welcome!
 
