@@ -2,6 +2,9 @@
 
 A simple documentation viewer for your `*.MD` files.
 
+
+![](docs/demo.gif)
+
 ### Installation via Composer
 
 You can install package with a command:
