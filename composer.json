@@ -1,6 +1,6 @@
 {
     "name": "webkadabra/yii2-docs-module",
-	"version": "2.0.0",
+	"version": "2.0.1",
     "description": "Yii2 Documentaiton Viewer Module",
     "type": "yii2-module",
     "license": "MIT",
@@ -13,7 +13,7 @@
     "authors": [
         {
             "name": "Sergii Gamaiunov",
-            "email": "hello@webkadabra.com"
+            "email": "devkadabra@gmail.com"
         }
     ],
     "require": {
