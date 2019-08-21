@@ -189,12 +189,15 @@ class DocsController  extends Controller
                         if ($languageKey == $this->module->getLanguage()) {
                             continue;
                         }
-                        if ($languageKey == $this->module->sourceLanguage) {
+                        if ($languageKey == $this->module->sourceLanguage ) {
                             $translatedViewId = $viewPath . DIRECTORY_SEPARATOR . $view_idFull;
-                            $url = yii\helpers\Url::toRoute(['index', 'page' => $page]);
                         } else {
                             $translatedViewId = $viewPath . DIRECTORY_SEPARATOR . $this->module->translationsFolder
                                 . DIRECTORY_SEPARATOR . $languageKey . DIRECTORY_SEPARATOR  . $view_idFull;
+                        }
+                        if ($languageKey == $this->module->defaultLanguage) {
+                            $url = yii\helpers\Url::toRoute(['index', 'page' => $page]);
+                        } else {
                             $url = yii\helpers\Url::toRoute(['index', 'page' => $page, 'language' => $languageKey]);
                         }
                         if (file_exists($translatedViewId)) {
