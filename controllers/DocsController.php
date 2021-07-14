@@ -101,7 +101,7 @@ class DocsController  extends Controller
                         }
                         if ($links) {
                             sort($links);
-                            $content[] = '* '.implode("\n\n* ", $links);
+                            $content[] = '* '.implode("\n* ", $links);
                             $content[] = '';
                         }
                     }
