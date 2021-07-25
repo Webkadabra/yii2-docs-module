@@ -52,11 +52,33 @@ Advanced configuration example (e.g. add breadcrumbs):
         'docs' => [
             'class' => 'webkadabra\yii\modules\docs\Module',
             'layout' => '/docs',
-            'on beforeAction'=>function($event) {
-                /** @var $event yii\base\ActionEvent */
-                Yii::$app->view->params['breadcrumbs'][] = ['label' => Yii::t('app', ucfirst($event->sender->id)), 'url' => ['/docs/index']];
-                Yii::$app->view->params['breadcrumbs'][] = ucwords(str_replace(['/', '_',], [' / ', ' '], Yii::$app->request->getQueryParam('page')));
-            }
+            'on beforeAction' => function ($event) {
+                /** @var yii\base\ActionEvent $event */
+                Yii::$app->view->params['breadcrumbs'][] = [
+                    'label' => Yii::t('app', ucfirst($event->sender->id)),
+                    'url' => ['docs/docs/index'],
+                ];
+                $exs = explode('/', Yii::$app->request->getQueryParam('page'));
+                $current = array_pop($exs);
+                $path = [];
+                foreach ($exs as $ex) {
+                    $path[] = $ex;
+                    Yii::$app->view->params['breadcrumbs'][] = [
+                        'label' => ucwords(str_replace(['/', '_'], ['/', ' '], $ex)),
+                        'url' => rawurldecode(\common\helpers\Url::toRoute(
+                            [
+                                'docs/docs/index',
+                                'page' => implode('/', $path),
+                            ]
+                        )), 
+                    ];
+                }
+                Yii::$app->view->params['breadcrumbs'][] = ucwords(str_replace(
+                    ['/', '_'],
+                    ['/', ' '],
+                    $current
+                ));
+            },
         ],
         // ...
 ],
