@@ -238,6 +238,7 @@ class DocsController  extends Controller
                     $resolveTitle = ltrim($resolveTitle, '/');
                     $links[] = '['.$resolveTitle.']('.urldecode(\yii\helpers\Url::toRoute(['index', 'page' => $view_id2], 1)).')';
                 }
+                sort($links);
                 $tpl = Yii::t('app', 'Index') . "\n\n* " . implode("\n* ", $links);
                 $content = Markdown::process($tpl, 'extra');
                 return $this->render('page', [
